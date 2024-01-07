@@ -1,7 +1,7 @@
 #include<stdio.h>
 
 int MaxNo(int a[],int n){
-    int i,j;
+    int i;
     int max=0;
     for(i=0;i<n;i++){
         if(a[i]>max){
