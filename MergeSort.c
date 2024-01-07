@@ -1,68 +1,75 @@
-#include <stdio.h>
+#include<stdio.h>
 
-void merge(int A[], int l, int mid, int h)
-{
-    int i = l, j = mid + 1, k = l;
-    int B[100];
-    while (i <= mid && j <= h)
-    {
-        if (A[i] < A[j])
-            B[k++] = A[i++];
-        else
-            B[k++] = A[j++];
-    }
-    for (; i <= mid; i++)
-        B[k++] = A[i];
-    for (; j <= h; j++)
-        B[k++] = A[j];
-    for (i = l; i <= h; i++)
-        A[i] = B[i];
-}
-void MergeSort(int A[], int n)
-{
-    int p, l, h, mid, i;
-    for (p = 2; p <= n; p = p * 2)
-    {
-        for (i = 0; i + p - 1 < n; i = i + p)
-        {
-            l = i;
-            h = i + p - 1;
-            mid = (l + h) / 2;
-            merge(A, l, mid, h);
+void Merge(int a[],int lb,int mid,int ub){
+    int i=lb;
+    int j=mid+1;
+    int k=lb;
+    int size = ub - lb + 1;  
+    int b[size];
+
+    while(i<=mid && j<=ub){
+        if(a[i]<=a[j]){
+            b[k]=a[i];
+            i++;
         }
-        if (n - i > p / 2)
-        {
-            l = i;
-            h = i + p - 1;
-            mid = (l + h) / 2;
-            merge(A, l, mid, n - 1);
+        else{
+            b[k]=a[j];
+            j++;
         }
+        k++;
     }
-    if (p / 2 < n)
-    {
-        merge(A, 0, p / 2 - 1, n - 1);
+    if(i>mid){
+        while(j<=ub){
+            b[k]=a[j];
+            j++;
+            k++;
+        }
+        
+    }
+    else{
+        while(i<=mid){
+            b[k]=a[i];
+            i++;
+            k++;
+        }
+            
+        
+    }
+
+    for(k=lb;k<=ub;k++){
+        a[k]=b[k];
     }
 }
 
-int main()
-{
-    int a[1000];
+void MergeSort(int a[],int lb,int ub){
+    if(lb<ub){
+        int mid=(lb+ub)/2;
+        MergeSort(a,lb,mid);
+        MergeSort(a,mid+1,ub);
+        Merge(a,lb,mid,ub);
+    }
+}
+
+
+int main() {
+    int a[100];
     int n;
-
-    printf("Enter number of components: ");
-    scanf("%d", &n);
-
-    for (int i = 0; i < n; i++)
-    {
+    printf("Enter number of components:");
+    scanf("%d",&n);
+    for(int i=0;i<n;i++){
         printf("Enter element: ");
-        scanf("%d", &a[i]);
+        scanf("%d",&a[i]);
     }
 
-    MergeSort(a, n);
+    printf("Original array: ");
+    for (int i = 0; i < n; i++) {
+        printf("%d ", a[i]);
+    }
 
-    printf("After sorting: ");
-    for (int i = 0; i < n; i++)
-    {
+    MergeSort(a,0,n-1);
+
+    printf("\nSorted array: ");
+    for (int i = 0; i < n; i++) {
         printf("%d ", a[i]);
     }
 
