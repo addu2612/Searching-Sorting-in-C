@@ -1,58 +1,53 @@
 #include <stdio.h>
 
-void swap(int *x, int *y) {
-    int temp = *x;
-    *x = *y;
-    *y = temp;
-}
+int Partition(int a[], int lb, int ub) {
+    int pivot = a[lb];
+    int start = lb;
+    int end = ub;
 
-int Partition(int a[], int l, int h) {
-    int pivot = a[l];
-    int i = l;
-    int j = h;
-
-    do {
-        do {
-            i++;
-        } while (a[i] <= pivot);
-
-        do {
-            j--;
-        } while (a[j] > pivot);
-
-        if (i < j) {
-            swap(&a[i], &a[j]);
+    while (start < end) {
+        while (a[start] <= pivot) {
+            start++;
         }
-    } while (i < j);
+        while (a[end] > pivot) {
+            end--;
+        }
+        if (start < end) {
+            int temp = a[start];
+            a[start] = a[end];
+            a[end] = temp;
+        }
+    }
 
-    swap(&a[l], &a[j]);
-    return j;
+    int temp = a[lb];
+    a[lb] = a[end];
+    a[end] = temp;
+
+    return end;
 }
 
-void QuickSort(int a[], int l, int h) {
-    int j;
-    if (l < h) {
-        j = Partition(a, l, h);
-        QuickSort(a, l, j);
-        QuickSort(a, j + 1, h);
+void QuickSort(int a[], int lb, int ub) {
+    if (lb < ub) {
+        int pivotIndex = Partition(a, lb, ub);
+        QuickSort(a, lb, pivotIndex - 1);
+        QuickSort(a, pivotIndex + 1, ub);
     }
 }
 
 int main() {
-    int a[1000];
+    int a[100];
     int n;
-
-    printf("Enter number of components: ");
+    printf("Enter number of elements: ");
     scanf("%d", &n);
 
     for (int i = 0; i < n; i++) {
-        printf("Enter element: ");
+        printf("Enter element %d: ", i + 1);
         scanf("%d", &a[i]);
     }
 
-    QuickSort(a, 0, n);
+    QuickSort(a, 0, n - 1);
 
-    printf("After sorting: ");
+    printf("Sorted array: ");
     for (int i = 0; i < n; i++) {
         printf("%d ", a[i]);
     }
